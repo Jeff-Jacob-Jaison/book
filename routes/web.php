@@ -15,6 +15,9 @@ Route::get('/', [PageController::class,"showLandingPage"]/*function () {
     ]);*/
 );
 
+Route::get('/about', [PageController::class, 'showAboutPage'])->name('about');
+Route::get('/collection', [PageController::class, 'showCollectionPage'])->name('collection');
+
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LendingController;
 use App\Http\Controllers\FineController;

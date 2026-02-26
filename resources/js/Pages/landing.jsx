@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Head, Link } from "@inertiajs/react";
+import BookLogo from "@/Components/BookLogo";
 
 /* ─── tiny hook: fade-in when element enters viewport ─── */
 function useInView(threshold = 0.15) {
@@ -58,10 +59,10 @@ export default function Landing() {
     const [footerRef, footerVis] = useInView();
 
     const navLinks = [
-        { label: "About", href: "#about" },
-        { label: "Browse", href: "#services" },
-        { label: "Services", href: "#services" },
-        { label: "Pricing", href: "#contact" },
+        { label: "Home", href: "/" },
+        { label: "About", href: "/about" },
+        { label: "Collection", href: "/collection" },
+        { label: "Services", href: "/#services" },
         { label: "Contact", href: "#contact" },
     ];
 
@@ -77,7 +78,7 @@ export default function Landing() {
 
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-3 group">
-                            <img src="/images/logo.png" alt="BookVault" className="h-9 w-auto" />
+                            <BookLogo className="h-9 w-9 text-emerald-brand drop-shadow-sm" />
                             <span className="text-lg font-bold tracking-wide uppercase">Book Vault</span>
                         </Link>
 
@@ -165,12 +166,12 @@ export default function Landing() {
                             <div className="absolute inset-0 bg-gradient-to-br from-emerald-brand/20 via-transparent to-emerald-brand/10 rounded-[2rem] blur-2xl scale-105" />
 
                             <div className="relative">
-                                {/* Decorative border ring */}
-                                <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-emerald-brand via-teal-panel to-emerald-dark opacity-60" />
-                                <div className="absolute -inset-2 rounded-[1.8rem] bg-[#f8f8f6]" />
+                                {/* Decorative metallic border ring */}
+                                <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-yellow-300 via-yellow-600 to-yellow-800 opacity-80 shadow-inner" />
+                                <div className="absolute -inset-[0.6rem] rounded-[1.8rem] bg-[#f8f8f6]" />
 
                                 {/* Main image card */}
-                                <div className="relative bg-white rounded-3xl shadow-2xl p-3 overflow-hidden">
+                                <div className="relative bg-white rounded-3xl shadow-2xl p-3 overflow-hidden border border-yellow-500/20">
                                     <img
                                         src="/images/hero-statue.png"
                                         alt="BookVault – knowledge & discovery"
@@ -178,50 +179,57 @@ export default function Landing() {
                                     />
                                 </div>
 
-                                {/* ── SVG Leaf decorations ── */}
+                                {/* ── SVG Metallic Leaf decorations ── */}
                                 {/* Top-left leaves */}
-                                <svg className="absolute -top-6 -left-6 w-16 h-16 text-emerald-brand drop-shadow-md" viewBox="0 0 64 64" fill="none">
-                                    <path d="M32 8C18 8 8 20 8 32c6-8 16-14 24-14" fill="currentColor" opacity="0.7" />
-                                    <path d="M28 4C16 6 6 16 4 28c8-6 18-10 24-12" fill="currentColor" opacity="0.5" />
-                                    <path d="M20 2C12 6 6 14 4 22c6-4 14-8 20-10" fill="currentColor" opacity="0.35" />
+                                <svg className="absolute -top-7 -left-7 w-20 h-20 text-yellow-600 drop-shadow-[0_4px_3px_rgba(0,0,0,0.4)]" viewBox="0 0 64 64" fill="none">
+                                    <defs>
+                                        <linearGradient id="metallic" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stopColor="#fef08a" />
+                                            <stop offset="50%" stopColor="#ca8a04" />
+                                            <stop offset="100%" stopColor="#713f12" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M32 8C18 8 8 20 8 32c6-8 16-14 24-14" fill="url(#metallic)" opacity="0.95" />
+                                    <path d="M28 4C16 6 6 16 4 28c8-6 18-10 24-12" fill="url(#metallic)" opacity="0.8" />
+                                    <path d="M20 2C12 6 6 14 4 22c6-4 14-8 20-10" fill="url(#metallic)" opacity="0.6" />
                                 </svg>
 
                                 {/* Top-right leaves */}
-                                <svg className="absolute -top-6 -right-6 w-16 h-16 text-emerald-brand drop-shadow-md" viewBox="0 0 64 64" fill="none">
-                                    <path d="M32 8C46 8 56 20 56 32c-6-8-16-14-24-14" fill="currentColor" opacity="0.7" />
-                                    <path d="M36 4C48 6 58 16 60 28c-8-6-18-10-24-12" fill="currentColor" opacity="0.5" />
-                                    <path d="M44 2C52 6 58 14 60 22c-6-4-14-8-20-10" fill="currentColor" opacity="0.35" />
+                                <svg className="absolute -top-7 -right-7 w-20 h-20 text-yellow-600 drop-shadow-[0_4px_3px_rgba(0,0,0,0.4)]" viewBox="0 0 64 64" fill="none">
+                                    <path d="M32 8C46 8 56 20 56 32c-6-8-16-14-24-14" fill="url(#metallic)" opacity="0.95" />
+                                    <path d="M36 4C48 6 58 16 60 28c-8-6-18-10-24-12" fill="url(#metallic)" opacity="0.8" />
+                                    <path d="M44 2C52 6 58 14 60 22c-6-4-14-8-20-10" fill="url(#metallic)" opacity="0.6" />
                                 </svg>
 
                                 {/* Bottom-left leaves */}
-                                <svg className="absolute -bottom-5 -left-5 w-14 h-14 text-emerald-brand drop-shadow-md" viewBox="0 0 64 64" fill="none">
-                                    <path d="M32 56C18 56 8 44 8 32c6 8 16 14 24 14" fill="currentColor" opacity="0.6" />
-                                    <path d="M28 60C16 58 6 48 4 36c8 6 18 10 24 12" fill="currentColor" opacity="0.4" />
+                                <svg className="absolute -bottom-6 -left-6 w-16 h-16 text-yellow-600 drop-shadow-[0_4px_3px_rgba(0,0,0,0.4)]" viewBox="0 0 64 64" fill="none">
+                                    <path d="M32 56C18 56 8 44 8 32c6 8 16 14 24 14" fill="url(#metallic)" opacity="0.9" />
+                                    <path d="M28 60C16 58 6 48 4 36c8 6 18 10 24 12" fill="url(#metallic)" opacity="0.75" />
                                 </svg>
 
                                 {/* Bottom-right leaves */}
-                                <svg className="absolute -bottom-5 -right-5 w-14 h-14 text-emerald-brand drop-shadow-md" viewBox="0 0 64 64" fill="none">
-                                    <path d="M32 56C46 56 56 44 56 32c-6 8-16 14-24 14" fill="currentColor" opacity="0.6" />
-                                    <path d="M36 60C48 58 58 48 60 36c-8 6-18 10-24 12" fill="currentColor" opacity="0.4" />
+                                <svg className="absolute -bottom-6 -right-6 w-16 h-16 text-yellow-600 drop-shadow-[0_4px_3px_rgba(0,0,0,0.4)]" viewBox="0 0 64 64" fill="none">
+                                    <path d="M32 56C46 56 56 44 56 32c-6 8-16 14-24 14" fill="url(#metallic)" opacity="0.9" />
+                                    <path d="M36 60C48 58 58 48 60 36c-8 6-18 10-24 12" fill="url(#metallic)" opacity="0.75" />
                                 </svg>
 
-                                {/* Top-center: open book icon */}
-                                <svg className="absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 text-emerald-brand drop-shadow-lg" viewBox="0 0 48 48" fill="none">
-                                    <path d="M24 12C20 8 12 6 6 8v26c6-2 14 0 18 4 4-4 12-6 18-4V8c-6-2-14 0-18 4z" fill="currentColor" opacity="0.15" stroke="currentColor" strokeWidth="1.5" />
-                                    <path d="M24 12v28" stroke="currentColor" strokeWidth="1.5" opacity="0.4" />
+                                {/* Top-center: metallic open book icon */}
+                                <svg className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 drop-shadow-[0_3px_4px_rgba(0,0,0,0.5)]" viewBox="0 0 48 48" fill="none">
+                                    <path d="M24 12C20 8 12 6 6 8v26c6-2 14 0 18 4 4-4 12-6 18-4V8c-6-2-14 0-18 4z" fill="url(#metallic)" opacity="0.85" stroke="url(#metallic)" strokeWidth="1.5" />
+                                    <path d="M24 12v28" stroke="url(#metallic)" strokeWidth="2" opacity="0.9" />
                                 </svg>
 
-                                {/* Side vine accents */}
-                                <svg className="absolute top-1/2 -left-4 -translate-y-1/2 w-6 h-24 text-emerald-brand" viewBox="0 0 24 96" fill="none">
-                                    <path d="M12 0C12 0 4 16 4 24s8 8 8 16-8 16-8 24 8 8 8 16-8 16-8 16" stroke="currentColor" strokeWidth="1.5" opacity="0.3" fill="none" />
-                                    <circle cx="4" cy="24" r="3" fill="currentColor" opacity="0.25" />
-                                    <circle cx="4" cy="72" r="3" fill="currentColor" opacity="0.25" />
+                                {/* Side vine accents (Metallic) */}
+                                <svg className="absolute top-1/2 -left-5 -translate-y-1/2 w-8 h-28 drop-shadow-md" viewBox="0 0 24 96" fill="none">
+                                    <path d="M12 0C12 0 4 16 4 24s8 8 8 16-8 16-8 24 8 8 8 16-8 16-8 16" stroke="url(#metallic)" strokeWidth="2" opacity="0.8" fill="none" />
+                                    <circle cx="4" cy="24" r="3.5" fill="url(#metallic)" />
+                                    <circle cx="4" cy="72" r="3.5" fill="url(#metallic)" />
                                 </svg>
 
-                                <svg className="absolute top-1/2 -right-4 -translate-y-1/2 w-6 h-24 text-emerald-brand" viewBox="0 0 24 96" fill="none">
-                                    <path d="M12 0C12 0 20 16 20 24s-8 8-8 16 8 16 8 24-8 8-8 16 8 16 8 16" stroke="currentColor" strokeWidth="1.5" opacity="0.3" fill="none" />
-                                    <circle cx="20" cy="24" r="3" fill="currentColor" opacity="0.25" />
-                                    <circle cx="20" cy="72" r="3" fill="currentColor" opacity="0.25" />
+                                <svg className="absolute top-1/2 -right-5 -translate-y-1/2 w-8 h-28 drop-shadow-md" viewBox="0 0 24 96" fill="none">
+                                    <path d="M12 0C12 0 20 16 20 24s-8 8-8 16 8 16 8 24-8 8-8 16 8 16 8 16" stroke="url(#metallic)" strokeWidth="2" opacity="0.8" fill="none" />
+                                    <circle cx="20" cy="24" r="3.5" fill="url(#metallic)" />
+                                    <circle cx="20" cy="72" r="3.5" fill="url(#metallic)" />
                                 </svg>
                             </div>
                         </div>
@@ -328,7 +336,7 @@ export default function Landing() {
 
                         <div>
                             <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                <img src="/images/logo.png" alt="" className="h-7 invert" />
+                                <BookLogo className="h-7 w-7 text-white" />
                                 BookVault
                             </h4>
                             <p className="text-gray-400 leading-relaxed">
