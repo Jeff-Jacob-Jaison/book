@@ -29,20 +29,23 @@ function Tag({ label }) {
 }
 
 /* ─── Service card ─── */
-function ServiceCard({ icon, title, desc }) {
+function ServiceCard({ icon, title, desc, visible, index }) {
     return (
-        <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-            <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-brand text-2xl mb-5 group-hover:bg-emerald-brand group-hover:text-white transition-colors">
+        <div
+            className={`bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-3 transition-all duration-700 ease-out group ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"}`}
+            style={{ transitionDelay: `${index * 150}ms` }}
+        >
+            <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-brand text-2xl mb-5 group-hover:bg-emerald-brand group-hover:text-white transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 shadow-sm group-hover:shadow-emerald-brand/30">
                 {icon}
             </div>
-            <h4 className="text-xl font-semibold mb-3">{title}</h4>
+            <h4 className="text-xl font-semibold mb-3 group-hover:text-emerald-700 transition-colors duration-300">{title}</h4>
             <p className="text-gray-500 leading-relaxed">{desc}</p>
         </div>
     );
 }
 
 /* ━━━━━━━━━━━━━━━━━━  MAIN LANDING PAGE  ━━━━━━━━━━━━━━━━━━ */
-export default function Landing() {
+export default function Landing({ auth }) {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenu, setMobileMenu] = useState(false);
 
@@ -62,13 +65,42 @@ export default function Landing() {
         { label: "Home", href: "/" },
         { label: "About", href: "/about" },
         { label: "Collection", href: "/collection" },
-        { label: "Services", href: "/#services" },
-        { label: "Contact", href: "#contact" },
+        { label: "Services", href: "/services" },
+        { label: "Contact", href: "/contact" },
     ];
 
     return (
         <>
-            <Head title="BookVault – Smart Library & Book Store" />
+            <Head>
+                <title>BookVault – Smart Library & Book Store</title>
+                <style>{`
+                    @keyframes float {
+                        0%, 100% { transform: translateY(0px) rotate(0deg); }
+                        50% { transform: translateY(-15px) rotate(2deg); }
+                    }
+                    @keyframes float-reverse {
+                        0%, 100% { transform: translateY(0px) rotate(0deg); }
+                        50% { transform: translateY(12px) rotate(-2deg); }
+                    }
+                    @keyframes pulse-glow {
+                        0%, 100% { opacity: 0.5; transform: scale(1); }
+                        50% { opacity: 0.8; transform: scale(1.05); }
+                    }
+                    @keyframes load-slide-up {
+                        from { opacity: 0; transform: translateY(40px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                    @keyframes load-fade {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    .animate-float { animation: float 6s ease-in-out infinite; }
+                    .animate-float-reverse { animation: float-reverse 7s ease-in-out infinite; }
+                    .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+                    .animate-load-slide-up { animation: load-slide-up 1s ease-out forwards; opacity: 0; }
+                    .animate-load-fade { animation: load-fade 1.5s ease-out forwards; opacity: 0; }
+                `}</style>
+            </Head>
 
             <div className="bg-[#f8f8f6] text-gray-800 font-sans antialiased overflow-x-hidden">
 
@@ -93,10 +125,17 @@ export default function Landing() {
                         </div>
 
                         {/* CTA */}
-                        <Link href="/login"
-                            className="hidden md:inline-flex bg-gray-900 text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-emerald-brand transition-colors">
-                            Get Started
-                        </Link>
+                        {auth?.user ? (
+                            <Link href="/dashboard"
+                                className="hidden md:inline-flex bg-gray-900 text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-emerald-brand transition-colors">
+                                Dashboard
+                            </Link>
+                        ) : (
+                            <Link href="/login"
+                                className="hidden md:inline-flex bg-gray-900 text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-emerald-brand transition-colors">
+                                Get Started
+                            </Link>
+                        )}
 
                         {/* Mobile hamburger */}
                         <button onClick={() => setMobileMenu(!mobileMenu)} className="md:hidden flex flex-col gap-1.5">
@@ -116,21 +155,32 @@ export default function Landing() {
                                     {l.label}
                                 </a>
                             ))}
-                            <Link href="/login"
-                                className="block text-center bg-gray-900 text-white px-5 py-2.5 rounded-full font-semibold hover:bg-emerald-brand transition-colors mt-2">
-                                Get Started
-                            </Link>
+                            {auth?.user ? (
+                                <Link href="/dashboard"
+                                    className="block text-center bg-gray-900 text-white px-5 py-2.5 rounded-full font-semibold hover:bg-emerald-brand transition-colors mt-2">
+                                    Dashboard
+                                </Link>
+                            ) : (
+                                <Link href="/login"
+                                    className="block text-center bg-gray-900 text-white px-5 py-2.5 rounded-full font-semibold hover:bg-emerald-brand transition-colors mt-2">
+                                    Get Started
+                                </Link>
+                            )}
                         </div>
                     )}
                 </nav>
 
 
                 {/* ═══════ HERO ═══════ */}
-                <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
-                    <div className="max-w-7xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center">
+                <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden animate-load-fade">
+                    {/* Background floating elements */}
+                    <div className="absolute top-1/4 left-10 w-64 h-64 bg-emerald-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div>
+                    <div className="absolute bottom-1/4 right-10 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float-reverse"></div>
+
+                    <div className="max-w-7xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center relative z-10">
 
                         {/* Left – Copy */}
-                        <div className="animate-fade-in-up">
+                        <div className="animate-load-slide-up" style={{ animationDelay: '200ms' }}>
                             <p className="text-emerald-brand font-semibold tracking-[0.25em] uppercase text-sm mb-4">
                                 Book Vault
                             </p>
@@ -161,7 +211,7 @@ export default function Landing() {
                         </div>
 
                         {/* Right – Hero Image with leafy book frame */}
-                        <div className="relative flex justify-center animate-slide-in-right">
+                        <div className="relative flex justify-center animate-load-slide-up" style={{ animationDelay: '500ms' }}>
                             {/* Outer glow */}
                             <div className="absolute inset-0 bg-gradient-to-br from-emerald-brand/20 via-transparent to-emerald-brand/10 rounded-[2rem] blur-2xl scale-105" />
 
@@ -171,7 +221,7 @@ export default function Landing() {
                                 <div className="absolute -inset-[0.6rem] rounded-[1.8rem] bg-[#f8f8f6]" />
 
                                 {/* Main image card */}
-                                <div className="relative bg-white rounded-3xl shadow-2xl p-3 overflow-hidden border border-yellow-500/20">
+                                <div className="relative bg-white rounded-3xl shadow-2xl p-3 overflow-hidden border border-yellow-500/20 animate-float">
                                     <img
                                         src="/images/hero-statue.png"
                                         alt="BookVault – knowledge & discovery"
@@ -214,7 +264,7 @@ export default function Landing() {
                                 </svg>
 
                                 {/* Top-center: metallic open book icon */}
-                                <svg className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 drop-shadow-[0_3px_4px_rgba(0,0,0,0.5)]" viewBox="0 0 48 48" fill="none">
+                                <svg className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 drop-shadow-[0_3px_4px_rgba(0,0,0,0.5)] animate-float-reverse" viewBox="0 0 48 48" fill="none">
                                     <path d="M24 12C20 8 12 6 6 8v26c6-2 14 0 18 4 4-4 12-6 18-4V8c-6-2-14 0-18 4z" fill="url(#metallic)" opacity="0.85" stroke="url(#metallic)" strokeWidth="1.5" />
                                     <path d="M24 12v28" stroke="url(#metallic)" strokeWidth="2" opacity="0.9" />
                                 </svg>
@@ -242,8 +292,8 @@ export default function Landing() {
 
                 {/* ═══════ ABOUT ═══════ */}
                 <section id="about" ref={aboutRef}
-                    className={`py-24 bg-white transition-all duration-700 ${aboutVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-                    <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
+                    className="py-24 bg-white overflow-hidden">
+                    <div className={`max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center transition-all duration-1000 ease-out ${aboutVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"}`}>
                         <div>
                             <p className="text-emerald-brand font-semibold tracking-[0.2em] uppercase text-sm mb-3">About Us</p>
                             <h3 className="text-3xl md:text-4xl font-bold mb-6">
@@ -268,12 +318,16 @@ export default function Landing() {
                                     "Smart Borrowing System",
                                     "Online Book Purchases",
                                     "User-Friendly Dashboard",
-                                ].map((item) => (
-                                    <li key={item} className="flex items-center gap-3">
-                                        <span className="w-6 h-6 rounded-full bg-emerald-brand text-white flex items-center justify-center flex-shrink-0">
+                                ].map((item, i) => (
+                                    <li
+                                        key={item}
+                                        className={`flex items-center gap-3 transition-all duration-700 ease-out hover:translate-x-2 ${aboutVis ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}`}
+                                        style={{ transitionDelay: `${400 + (i * 150)}ms` }}
+                                    >
+                                        <span className="w-6 h-6 rounded-full bg-emerald-brand text-white flex items-center justify-center flex-shrink-0 shadow-md">
                                             <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
                                         </span>
-                                        {item}
+                                        <span className="font-medium">{item}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -283,14 +337,17 @@ export default function Landing() {
 
 
                 {/* ═══════ SERVICES ═══════ */}
-                <section id="services" ref={servicesRef}
-                    className={`py-24 bg-[#f8f8f6] transition-all duration-700 ${servicesVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+                <section id="services" ref={servicesRef} className="py-24 bg-[#f8f8f6] overflow-hidden">
                     <div className="max-w-7xl mx-auto px-6 text-center">
-                        <p className="text-emerald-brand font-semibold tracking-[0.2em] uppercase text-sm mb-3">What We Offer</p>
-                        <h3 className="text-3xl md:text-4xl font-bold mb-14">Our Services</h3>
+                        <div className={`transition-all duration-1000 ease-out ${servicesVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+                            <p className="text-emerald-brand font-semibold tracking-[0.2em] uppercase text-sm mb-3">What We Offer</p>
+                            <h3 className="text-3xl md:text-4xl font-bold mb-14">Our Services</h3>
+                        </div>
 
                         <div className="grid md:grid-cols-3 gap-8">
                             <ServiceCard
+                                visible={servicesVis}
+                                index={0}
                                 icon={
                                     <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
@@ -302,6 +359,8 @@ export default function Landing() {
                                 desc="Manage book inventory, track borrowed books, handle returns and overdue notices seamlessly."
                             />
                             <ServiceCard
+                                visible={servicesVis}
+                                index={1}
                                 icon={
                                     <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -313,6 +372,8 @@ export default function Landing() {
                                 desc="Browse and purchase books directly from our integrated online shop with secure checkout."
                             />
                             <ServiceCard
+                                visible={servicesVis}
+                                index={2}
                                 icon={
                                     <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                         <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -356,9 +417,9 @@ export default function Landing() {
 
                         <div>
                             <h4 className="text-xl font-bold mb-4">Contact Us</h4>
-                            <p className="text-gray-400">Email: support@bookvault.com</p>
-                            <p className="text-gray-400">Phone: +123 456 7890</p>
-                            <p className="text-gray-400">Location: Your City, Country</p>
+                            <p className="text-gray-400">Email: jeffjacob1527@gmail.com</p>
+                            <p className="text-gray-400">Phone: +91 8075791048</p>
+                            <p className="text-gray-400">Location: Kochi, Kerala</p>
                         </div>
                     </div>
 

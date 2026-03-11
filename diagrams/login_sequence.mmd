@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant AuthController
+    participant Database
+
+    User->>Frontend: Enter credentials
+    Frontend->>AuthController: POST /login
+    AuthController->>Database: Query user by email
+    Database-->>AuthController: Return user & hash
+    AuthController->>AuthController: Verify password
+    alt Valid Credentials
+        AuthController->>Database: Create session
+        Database-->>AuthController: Session created
+        AuthController-->>Frontend: Redirect to Dashboard (200 OK)
+        Frontend-->>User: Display Dashboard
+    else Invalid Credentials
+        AuthController-->>Frontend: Redirect back with errors (302 Found)
+        Frontend-->>User: Display error message
+    end

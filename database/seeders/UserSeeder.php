@@ -14,19 +14,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminRole = Role::where('name', 'Admin')->first();
         $librarianRole = Role::where('name', 'Librarian')->first();
         $memberRole = Role::where('name', 'Member')->first();
 
-        // Admin User
-        User::firstOrCreate(
-            ['email' => 'admin@bookvault.com'],
-            [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
-                'role_id' => $adminRole->id ?? 1,
-            ]
-        );
+        // Admin User (Removed)
 
         // Librarian User
         User::firstOrCreate(

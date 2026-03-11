@@ -1,0 +1,64 @@
+erDiagram
+    User {
+        int id PK
+        string name
+        string email
+        string password
+        int role_id FK
+        float balance
+    }
+    Role {
+        int id PK
+        string role_name
+    }
+    Book {
+        int id PK
+        string book_name
+        string author
+        string genre
+        string description
+        string file_path
+        int available_copies
+        string type
+    }
+    Lending {
+        int id PK
+        int user_id FK
+        int book_id FK
+        date checkout_date
+        date due_date
+        date return_date
+        string status
+    }
+    BookForSale {
+        int id PK
+        string book_name
+        string author
+        string description
+        string file_path
+        string genre
+        int stock
+        float price
+    }
+    Purchase {
+        int id PK
+        int user_id FK
+        int book_for_sale_id FK
+        float price
+        date purchase_date
+    }
+    Fine {
+        int id PK
+        int user_id FK
+        int lending_id FK
+        float fine_amount
+        string status
+    }
+
+    Role ||--o{ User : has
+    User ||--o{ Lending : makes
+    Book ||--o{ Lending : borrowed_in
+    User ||--o{ Purchase : buys
+    BookForSale ||--o{ Purchase : sold_as
+    User ||--o{ Fine : incurs
+    Lending ||--o| Fine : results_in

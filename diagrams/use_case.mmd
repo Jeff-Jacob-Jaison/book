@@ -1,0 +1,30 @@
+flowchart LR
+    subgraph Users
+        U((User))
+        L((Librarian))
+    end
+    
+    subgraph BookVault System
+        UC1(Login / Register)
+        UC2(Browse Books)
+        UC3(Borrow Books)
+        UC4(Return Books)
+        UC5(Buy Books)
+        UC6(Pay Fines)
+        UC7(Manage Inventory)
+        UC8(Approve Lendings)
+        UC9(Manage Roles)
+    end
+    
+    U --> UC1
+    U --> UC2
+    U --> UC3
+    U --> UC4
+    U --> UC5
+    U --> UC6
+    
+    L --> UC1
+    L --> UC2
+    L --> UC7
+    L --> UC8
+    L --> UC9

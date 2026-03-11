@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant BookForSaleController
+    participant PurchaseModel
+    participant Database
+
+    User->>Frontend: Request to Buy Book
+    Frontend->>BookForSaleController: POST /purchases {book_for_sale_id}
+    BookForSaleController->>Database: Verify user role & sufficient balance
+    Database-->>BookForSaleController: Status OK
+    BookForSaleController->>Database: Deduct price from user balance
+    Database-->>BookForSaleController: Balance Updated
+    BookForSaleController->>Database: Create Purchase Record
+    Database-->>BookForSaleController: Record Created
+    BookForSaleController->>PurchaseModel: Check BookForSale stock
+    PurchaseModel->>Database: Decrement stock by 1
+    Database-->>PurchaseModel: Stock Updated
+    BookForSaleController-->>Frontend: Success Response (200 OK)
+    Frontend-->>User: Display Purchase Complete

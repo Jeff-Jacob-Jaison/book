@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant LendingController
+    participant BookModel
+    participant Database
+
+    User->>Frontend: Request to Lend Book
+    Frontend->>LendingController: POST /lendings {book_id, return_date}
+    LendingController->>Database: Verify user role and status
+    Database-->>LendingController: Status OK
+    LendingController->>BookModel: Check availability
+    BookModel->>Database: Query available copies
+    Database-->>BookModel: Copies > 0
+    BookModel-->>LendingController: Book Available
+    LendingController->>Database: Create Lending Record
+    Database-->>LendingController: Success
+    LendingController->>BookModel: Decrement available copies
+    BookModel->>Database: Update Book
+    Database-->>BookModel: Updated
+    LendingController-->>Frontend: Success Response (200 OK)
+    Frontend-->>User: Display Success Message

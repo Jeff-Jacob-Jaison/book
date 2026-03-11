@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'balance',
     ];
 
     /**
@@ -62,8 +63,23 @@ class User extends Authenticatable
         return $this->hasMany(Fine::class);
     }
 
+    public function uploadedBooks()
+    {
+        return $this->hasMany(Book::class, 'uploader_id');
+    }
+
     public function booksForSale()
     {
         return $this->hasMany(BookForSale::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
     }
 }

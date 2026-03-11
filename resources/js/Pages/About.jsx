@@ -36,8 +36,8 @@ export default function About() {
         { label: "Home", href: "/" },
         { label: "About", href: "/about" },
         { label: "Collection", href: "/collection" },
-        { label: "Services", href: "/#services" },
-        { label: "Contact", href: "#contact" },
+        { label: "Services", href: "/services" },
+        { label: "Contact", href: "/contact" },
     ];
 
     return (
@@ -113,7 +113,7 @@ export default function About() {
                             <img
                                 src="/images/about-statue.png"
                                 alt="Wisdom and Foundation"
-                                className="absolute inset-0 w-full h-full object-cover object-bottom transition-transform duration-700 ease-out group-hover:scale-105 origin-bottom"
+                                className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out origin-center"
                             />
                         </div>
 
@@ -219,9 +219,9 @@ export default function About() {
 
                         <div>
                             <h4 className="text-xl font-bold mb-4">Contact Us</h4>
-                            <p className="text-gray-400">Email: support@bookvault.com</p>
-                            <p className="text-gray-400">Phone: +123 456 7890</p>
-                            <p className="text-gray-400">Location: Your City, Country</p>
+                            <p className="text-gray-400">Email: jeffjacob1527@gmail.com</p>
+                            <p className="text-gray-400">Phone: +91 8075791048</p>
+                            <p className="text-gray-400">Location: Kochi, Kerala</p>
                         </div>
                     </div>
 
