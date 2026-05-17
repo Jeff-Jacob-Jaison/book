@@ -1,0 +1,26 @@
+WPL Project Report
+BookVault
+Done by Jeff Jacob Jaison
+Guided by Mr. Ajay Antony Joseph
+ABSTRACT
+BookVault is a comprehensive web-based platform designed to simplify library management, integrating lending services, marketplace features, user interactions, and fines calculation. Built on Laravel 12, BookVault provides a dynamic environment for members to borrow books, submit e-books, and buy or sell personal books. Librarians and Administrators ensure a seamless ecosystem with role-based moderation. This modern project enhances operational efficiency in book distribution and digital cataloging.
+1. INTRODUCTION
+BookVault is a robust application developed using the latest Laravel framework. It provides users with an integrated collection of both library lending services and a peer-to-peer marketplace. Members can view available books, track their borrow history, resolve their fines, and participate in community sales. With careful validation and security layers, BookVault ensures high-level data integrity and scalable architecture in managing digital and physical books.
+2. SYSTEM ANALYSIS
+2.1 Module Description
+1. Book Management: Enables Librarians to moderate books, modify stocks, and categorize digital submissions.2. Lending Management: Users can request books and track return dates. The system deducts stock on lending and restores it upon return.3. Fine Management: Calculates penalties dynamically if a user exceeds the lending deadline.4. Marketplace: Allows members to list personal books for sale and others to purchase them.5. Role Management: Secures access through specific roles (Member, Librarian, Admin).
+2.2 Actors and Roles
+Admin: Has ultimate control over the platform's settings, users, and overall operations.Librarian: Focuses on moderating book collections, approving e-book submissions, and managing the market listings.Member (User): The central consumer who borrows books, pays fines, lists items for sale, and makes purchases.
+3. SYSTEM DESIGN
+3.1 Use Case Model
+3.2 Sequence Diagrams
+User Login:
+Book Lending:
+3.3 Entity Relationship Diagram
+3.4 Class Diagram
+4. SYSTEM ARCHITECTURE & DATABASE DESIGN
+The application relies on a modern MVC architecture provided by the Laravel framework. The backend logic securely connects to the PostgreSQL/MySQL database through Laravel's highly optimized Eloquent ORM. The frontend leverages Tailwind CSS / Bootstrap along with Vue/Inertia.js for seamless view rendering without continuous page reloads.
+4.1 Table Design
+1. Users Table: Central identity tracker, housing fields like: ID, Name, Email, Password, Role_ID.2. Books Table: Core entity for library stock, containing: Title, ISBN, Author, Base Stock, Approved status.3. Lendings Table: Logs active or resolved borrows, featuring tracking tokens: User_ID, Book_ID, Borrow_Date, Return_Deadline.4. Fines Table: Calculated values linking specific Lendings to overdue amounts, storing boolean resolution states.5. BookForSale and Purchases: Facilitator of the integrated P2P sales mechanics, linking multiple Users to specific items and price tags.
+5. CONCLUSION
+BookVault streamlines advanced library and reading processes, making book lending, selling, and tracking much easier and far more efficient. Through the use of modern development paradigms built on the Laravel framework, the platform remains highly reliable, expandable, and accessible.

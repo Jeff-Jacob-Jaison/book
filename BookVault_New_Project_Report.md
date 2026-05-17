@@ -158,8 +158,135 @@ The architecture utilizes foreign keys for strict referential integrity with cas
 - **Lendings & Fines Tables:** Links users to library books with explicit issuance, return timestamps, and penalty accruals.
 - **Wishlists Table:** A polymorphic-friendly schema tracking saved books and marketplace items per user.
 
+### Database Tables Summary
+The BookVault system is built upon a relational database schema comprising 8 core tables, each serving a specific role in the library and marketplace ecosystem.
+
+| Table Name | Purpose / Description |
+| :--- | :--- |
+| **roles** | Manages user authorization levels (e.g., Librarian, Member). |
+| **users** | Stores user account information and virtual wallet balances. |
+| **books** | Central catalog for library-owned physical and digital books. |
+| **lendings** | Tracks the borrowing lifecycle of physical library assets. |
+| **fines** | Manages monetary penalties for late book returns. |
+| **book_for_sales** | Facilitates the peer-to-peer marketplace listings. |
+| **purchases** | Records financial transactions for marketplace items. |
+| **wishlists** | Allows users to bookmark library or marketplace items. |
+
+### Data Dictionary
+### Data Dictionary
+#### Table 3.1: Users Table (users)
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| id | BigInt, AI | Primary Key |
+| name | Varchar(255) | User's full name |
+| email | Varchar(255) | Unique email address |
+| balance | Decimal(10,2) | User's wallet balance (Default 0.00) |
+| password | Varchar(255) | Hashed password |
+| role_id | BigInt | Foreign Key (Roles) |
+| created_at | Timestamp | Record creation time |
+| updated_at | Timestamp | Record modification time |
+
+#### Table 3.2: Books Table (books)
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| id | BigInt, AI | Primary Key |
+| title | Varchar(255) | Title of the book |
+| author | Varchar(255) | Author of the book |
+| isbn | Varchar(255) | Unique ISBN |
+| published_year | Integer | Year of publication |
+| quantity | Integer | Total stock (Lendable) |
+| available_qty | Integer | Current available stock |
+| description | Text | Book overview |
+| cover_image | Varchar(255) | Path to cover image |
+| created_at | Timestamp | Record creation time |
+| updated_at | Timestamp | Record modification time |
+
+#### Table 3.3: Lendings Table (lendings)
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| id | BigInt, AI | Primary Key |
+| user_id | BigInt | Foreign Key (Users) |
+| book_id | BigInt | Foreign Key (Books) |
+| issued_at | Timestamp | Time of issuance (Default Current) |
+| due_date | Timestamp | Deadline for return |
+| returned_at | Timestamp | Actual return time |
+| status | Varchar(255) | Borrowing status (e.g., 'borrowed') |
+| created_at | Timestamp | Record creation time |
+| updated_at | Timestamp | Record modification time |
+
+#### Table 3.4: Fines Table (fines)
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| id | BigInt, AI | Primary Key |
+| lending_id | BigInt | Foreign Key (Lendings) |
+| user_id | BigInt | Foreign Key (Users) |
+| amount | Decimal(8,2) | Penalty amount |
+| paid | Boolean | Status of payment (Default false) |
+| created_at | Timestamp | Record creation time |
+| updated_at | Timestamp | Record modification time |
+
+#### Table 3.5: BookForSales Table (book_for_sales)
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| id | BigInt, AI | Primary Key |
+| user_id | BigInt | Foreign Key (Seller) |
+| title | Varchar(255) | Book title for sale |
+| author | Varchar(255) | Book author |
+| price | Decimal(8,2) | Selling price |
+| description | Text | Item description |
+| condition | Varchar(255) | Item condition (e.g., 'New') |
+| status | Varchar(255) | Moderation status (Default 'pending') |
+| created_at | Timestamp | Record creation time |
+| updated_at | Timestamp | Record modification time |
+
+#### Table 3.6: Wishlists Table (wishlists)
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| id | BigInt, AI | Primary Key |
+| user_id | BigInt | Foreign Key (Users) |
+| book_id | BigInt | Foreign Key (Books), Nullable |
+| book_for_sale_id | BigInt | Foreign Key (Marketplace), Nullable |
+| created_at | Timestamp | Record creation time |
+| updated_at | Timestamp | Record modification time |
+
+#### Table 3.7: Roles Table (roles)
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| id | BigInt, AI | Primary Key |
+| name | Varchar(255) | Role name (e.g., 'Member') |
+| created_at | Timestamp | Record creation time |
+| updated_at | Timestamp | Record modification time |
+
+#### Table 3.8: Purchases Table (purchases)
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| id | BigInt, AI | Primary Key |
+| user_id | BigInt | Foreign Key (Buyer) |
+| book_id | BigInt | Foreign Key (Book) |
+| amount_paid | Decimal(8,2) | Total paid amount |
+| commission_earned | Decimal(8,2) | Platform fee earned |
+| created_at | Timestamp | Record creation time |
+| updated_at | Timestamp | Record modification time |
+
+### Workflow Diagram
+The following diagram illustrates the integrated workflow across different user roles within the BookVault system.
+
+![BookVault Workflow Diagram](diagrams/workflow_basic.png)
+
+### Use Case Diagram
+The following diagrams illustrate the interaction between different actors and the BookVault system.
+
+![BookVault Use Case Diagram (Premium)](diagrams/use_case_premium.png)
+
+![BookVault Use Case Diagram (Wireframe)](diagrams/use_case_wireframe.png)
+
+### Entity-Relationship (ER) Diagram
+The following diagram showcases the database schema and the relationships between various entities in the BookVault system.
+
+![BookVault ER Diagram](diagrams/er_diagram.png)
+
 ### User Interface Design
-An emphasis is placed on creating an immersive and responsive interface using Tailwind CSS and React components, featuring dynamic dashboards, modular generic components (`PrimaryButton`), and soft container styles.
+An emphasis is placed on creating an immersive and responsive interface using Tailwind CSS and React components, featuring dynamic dashboards, modular generic components (PrimaryButton), and soft container styles.
 *(Diagrams/Screenshots placeholder: Insert screenshots of Landing Page, Dashboard, and Marketplace here)*
 
 ---
